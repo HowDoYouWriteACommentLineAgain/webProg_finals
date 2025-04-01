@@ -27,10 +27,13 @@ function Login({returnStatus}) {
     
   }
 
+  const InputsClassName = "form-control form-control-lg mb-3";
+
   return (
-      <fieldset className='form'>
+      <fieldset className='form mb-3'>
         <h1>User login</h1>
-        <Inputs 
+        <Inputs
+          className={InputsClassName}
           types="text" 
           name="username" 
           placeholder="username" 
@@ -39,6 +42,7 @@ function Login({returnStatus}) {
         />
         <span>
             <Inputs 
+            className={InputsClassName}
             types={peekPassword ? "text" : "password"} 
             name="password" 
             placeholder="Password" 

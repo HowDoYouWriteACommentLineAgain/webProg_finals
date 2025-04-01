@@ -61,25 +61,30 @@ export default function(){
         }
     }
 
+    const InputsClassName = "form-control form-control-lg mb-3";
+
     return (
     <>
         <fieldset className='form'>
             <h1>User registration</h1>
-            <Inputs 
+            <Inputs
+                className={InputsClassName}
                 types="text" 
                 name="username" 
                 placeholder="username" 
                 value={username} 
                 onChange={(e)=> setUsername(e.target.value)}
             />
-            <Inputs 
+            <Inputs
+                className={InputsClassName}
                 types="text" 
                 name="password" 
                 placeholder="password" 
                 value={password} 
                 onChange={(e)=> setPassword(e.target.value)}
             />
-            <Inputs 
+            <Inputs
+                className={InputsClassName}
                 types="text" 
                 name="confirmPassword" 
                 placeholder="confirm password" 

@@ -1,11 +1,11 @@
-function Inputs({name, types, placeholder, onClick, onChange, disabled, value}){
+function Inputs({name, types, placeholder, onClick, onChange, disabled, value, className}){
     console.log(`Rendering ${name}:`, value);
     return(
   
       <input 
-        className="Input" 
+        className={className}
         value={value}
-        type={types} 
+        type={types ?? "text"} 
         name={name} 
         placeholder={placeholder} 
         onClick={onClick} 

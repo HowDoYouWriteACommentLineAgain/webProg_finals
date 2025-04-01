@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback } from 'react';
-import Inputs from './Inputs';
-import FetchUsers from './FetchUsers';
+import Inputs from '../components/Inputs';
+import FetchUsers from '../components/FetchUsers';
 
 export default function(){
     const [list, setList] = useState([]);

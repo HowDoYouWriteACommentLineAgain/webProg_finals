@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-import {colors, primary, elements} from'./customStyles';
-import Login from './Login';
-import UsersCrud from './UsersCrud';
+import {colors, primary, elements} from'./styleObjects/customStyles';
+import Login from './pages/Login';
+import UsersCrud from './pages/UsersCrud';
 import Layout from './Layout';
-import Dashboard from './Dashboard';
+import Dashboard from './pages/Dashboard';
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import {primary, card} from'./customStyles';
+import {primary, card} from'./styleObjects/customStyles';
 
 const Layout = () => {
     return(

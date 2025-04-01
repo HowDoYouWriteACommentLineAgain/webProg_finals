@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import DeleteUser from './DeleteUsers';
 
 export default function FetchUsers({list, setList}){
 

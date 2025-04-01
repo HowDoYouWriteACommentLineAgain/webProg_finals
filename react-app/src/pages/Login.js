@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import Inputs from './Inputs';
+import Inputs from '../components/Inputs';
 
 
 function Login({returnStatus}) {

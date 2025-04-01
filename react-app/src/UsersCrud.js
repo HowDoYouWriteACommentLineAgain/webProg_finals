@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback } from 'react';
 import Inputs from './Inputs';
-import DeleteUser from './DeleteUsers';
+import FetchUsers from './FetchUsers';
 
 export default function(){
     const [list, setList] = useState([]);
@@ -25,7 +25,6 @@ export default function(){
         setUsername('');
         setPassword('');
         setCPassword('');
-
         addUser();
     }
 
@@ -62,35 +61,35 @@ export default function(){
         }
     }
 
-
     return (
-    <fieldset className='form'>
-        <h1>User registration</h1>
-        <Inputs 
-            types="text" 
-            name="username" 
-            placeholder="username" 
-            value={username} 
-            onChange={(e)=> setUsername(e.target.value)}
-        />
-        <Inputs 
-            types="text" 
-            name="password" 
-            placeholder="password" 
-            value={password} 
-            onChange={(e)=> setPassword(e.target.value)}
-        />
-        <Inputs 
-            types="text" 
-            name="confirmPassword" 
-            placeholder="confirm password" 
-            value={cPassword} 
-            onChange={(e)=> setCPassword(e.target.value)}
-        />
-        <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
-        <br />
-        <DeleteUser />
-    </fieldset>
+    <>
+        <fieldset className='form'>
+            <h1>User registration</h1>
+            <Inputs 
+                types="text" 
+                name="username" 
+                placeholder="username" 
+                value={username} 
+                onChange={(e)=> setUsername(e.target.value)}
+            />
+            <Inputs 
+                types="text" 
+                name="password" 
+                placeholder="password" 
+                value={password} 
+                onChange={(e)=> setPassword(e.target.value)}
+            />
+            <Inputs 
+                types="text" 
+                name="confirmPassword" 
+                placeholder="confirm password" 
+                value={cPassword} 
+                onChange={(e)=> setCPassword(e.target.value)}
+            />
+            <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
+        </fieldset>
+        <FetchUsers list={list} setList={setList}/>
+    </>
   
     );
 }

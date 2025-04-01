@@ -48,14 +48,17 @@ app.get("/Users", async (req, res) => {
     }
 });
   
-  app.delete("/Users/:id", async (req,res)=>{
-    try{
-        const {id} = req.params;
-        await UsersModel.findByIdAndDelete(id);
-    }catch(error){
-        res.status(500).json({message:"Error Deleting User"});
-    }
-  })
+app.delete("/Users/:id", async (req,res)=>{
+  try{
+      const {id} = req.params;
+      await UsersModel.findByIdAndDelete(id);
+      
+      // Respond with a success message
+      res.status(200).json({ message: "User deleted successfully" });
+  }catch(error){
+      res.status(500).json({message:"Error Deleting User"});
+  }
+})
 
 //express paths end
 

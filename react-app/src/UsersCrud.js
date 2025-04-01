@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import Inputs from './Inputs';
+import DeleteUser from './DeleteUsers';
 
 export default function(){
     const [list, setList] = useState([]);
@@ -9,9 +10,16 @@ export default function(){
 
     useEffect(()=>{
         console.clear();
-        console.table(username,password);
-        console.log(list);  
+        console.table("Table: ", username,password);
+        console.log("List is:" + list);  
     }, [username, password]);
+
+
+    useEffect(()=>{
+        fetch("http://localhost:5000/Users")
+            .then(res => res.json())
+            .then(data => setList(data));
+    }, []);
 
     function handleClick(){
         setUsername('');
@@ -54,6 +62,7 @@ export default function(){
         }
     }
 
+
     return (
     <fieldset className='form'>
         <h1>User registration</h1>
@@ -79,6 +88,8 @@ export default function(){
             onChange={(e)=> setCPassword(e.target.value)}
         />
         <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
+        <br />
+        <DeleteUser />
     </fieldset>
   
     );

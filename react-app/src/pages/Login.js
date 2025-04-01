@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import Inputs from '../components/Inputs';
 
 
@@ -12,46 +12,100 @@ function Login({returnStatus}) {
   const hardUsername = 'root';
   const hardassword = 'password';
 
+  const form = useRef(null);
+  const uInput = useRef(null);
+  const pInput = useRef(null);
+
   function handleClicks(){
+    form.current.classList.add('was-validated');
+    if (!username || !password){
+      return;
+    }
+
+    form.current.classList.remove('was-validated');
+
     const usernameMatch = (username === hardUsername);
     const passwordMatch = (password === hardassword);
 
-    const bothConditionsPassed = usernameMatch && passwordMatch;
+    if (!usernameMatch) uInput.current.classList.add('is-invalid');
+    if (!passwordMatch) pInput.current.classList.add('is-invalid');
 
-    if(bothConditionsPassed){
-      return returnStatus (true);
-    }
-    else {
-        return returnStatus (false);
-    }
+    (async ()=>{
+      try{
+        const res = await fetch("http://localhost:5000/Users",{                
+          method:"POST",
+          headers:{"Content-Type": "application/json"},
+          body:JSON.stringify({username: username, password: password})
+        })
+  
+        if (!res.ok) {
+          const errorText = await res.text(); // Get error details
+          alert(errorText); // Show user-friendly alert
+          throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
+        }
+
+        if(res.success === true){
+          uInput.current.classList.remove('is-invalid');
+          uInput.current.classList.remove('is-invalid');
+          alert('Login success');
+        } else{
+          alert('Login success');
+        }
+
+
+      }catch(err){
+        console.error("Error: ", err);
+      }
+    })();
+
+
+  }
+
+  const handleChange = (stateSetter) => e => {
+    const content = e.target.value;
+    e.target.classList.remove('is-invalid');
+    stateSetter( content);
     
   }
 
-  const InputsClassName = "form-control form-control-lg mb-3";
-
   return (
-      <fieldset className='form mb-3'>
+      <fieldset className='form mb-3 need-validation' ref={form}>
         <h1>User login</h1>
         <Inputs
-          className={InputsClassName}
+          className="form-control form-control-lg mb-3"
           types="text" 
           name="username" 
           placeholder="username" 
           value={username} 
-          onChange={(e)=> setUsername(e.target.value)}
+          onChange={handleChange(setUsername)}
+          isRequired={true}
+          id = "usernameInput"
+          ref = {uInput}
         />
-        <span>
+        <span className=''></span>
+        <span className='input-group'>
+
             <Inputs 
-            className={InputsClassName}
+            className="form-control form-control-lg mb-3 col-6"
             types={peekPassword ? "text" : "password"} 
             name="password" 
             placeholder="Password" 
             value={password} 
-            onChange={(e)=> setPassword(e.target.value)}
+            onChange={handleChange(setPassword)}
+            isRequired={true}
+            id = "passwordInput"
+            ref = {pInput}
             />
-            <button type='button' onClick={()=>setPeekPassword(s => !s)}> {peekPassword ? "hide" : "show"}  </button>
+
+            <button 
+              className="btn btn-dark input-group-addon col-1 mb-3" 
+              type='button' 
+              onClick={()=>setPeekPassword(prev => !prev)}
+            > 
+              {peekPassword ? <i className="bi bi-eye-fill"></i> : <i className="bi bi-eye-slash"></i>}
+            </button>
         </span>
-        <Inputs types="submit" name="submit" onClick={()=>handleClicks()}/>
+        <Inputs types="submit" className="btn btn-primary col-11" name="submit" onClick={()=>handleClicks()}/>
     </fieldset>
 
   );

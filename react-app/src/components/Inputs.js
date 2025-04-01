@@ -1,4 +1,4 @@
-function Inputs({name, types, placeholder, onClick, onChange, disabled, value, className, id, isRequired}){
+function Inputs({name, types, placeholder, onClick, onChange, disabled, value, className, id, isRequired, ref}){
     // console.log(`Rendering ${name}:`, value);
     return(
   
@@ -13,6 +13,7 @@ function Inputs({name, types, placeholder, onClick, onChange, disabled, value, c
         onChange={onChange} 
         disabled={disabled ?? false}
         required={isRequired ?? true}
+        ref = {ref}
       />
       
     );

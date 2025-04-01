@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const UsersModel = require("./models/Users.js");
+const Users = require("./models/Users.js");
 
 const app = express();
 app.use(express.json());
@@ -57,6 +58,25 @@ app.delete("/Users/:id", async (req,res)=>{
       res.status(200).json({ message: "User deleted successfully" });
   }catch(error){
       res.status(500).json({message:"Error Deleting User"});
+  }
+})
+
+app.get("Users", async (req,res)=>{
+  try{
+    const found = await UsersModel.findOne({username:req.body.username});
+
+    if (!found){
+      console.log('User not found');
+      res.status(404).json({message:"user not found"});
+      return;
+    }
+
+    const isMatch = found.password === req.body.password;
+
+    isMatch ? res.json({ success: true, message: "Authentication successful" }) : { success: false, message: "Authentication failed" };
+
+  }catch(err){
+    console.error("Error authenticating user",err );
   }
 })
 

@@ -1,16 +1,18 @@
-function Inputs({name, types, placeholder, onClick, onChange, disabled, value, className}){
-    console.log(`Rendering ${name}:`, value);
+function Inputs({name, types, placeholder, onClick, onChange, disabled, value, className, id, isRequired}){
+    // console.log(`Rendering ${name}:`, value);
     return(
   
       <input 
+        id={id}
         className={className}
         value={value}
         type={types ?? "text"} 
-        name={name} 
-        placeholder={placeholder} 
+        name={name}
+        placeholder={placeholder ?? "Insert input here"} 
         onClick={onClick} 
         onChange={onChange} 
-        disabled={disabled}
+        disabled={disabled ?? false}
+        required={isRequired ?? true}
       />
       
     );

@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
 
-export default function FetchUsers({list, setList}){
+export default function FetchUsers({list, setList, url}){
 
-    // useEffect(()=>{
-    //     fetch("http://localhost:5000/Users")
-    //         .then(res => res.json())
-    //         .then(data => setList(data));
-    // });
+    useEffect(()=>{
+        fetch(`http://localhost:5000/${url}`)
+            .then(res => res.json())
+            .then(data => setList(data));
+    }, []);
 
     const handleDelete = async (id) =>{
 
-        await fetch(`http://localhost:5000/Users/${id}`,{method: "DELETE"});
+        await fetch(`http://localhost:5000/${url}/${id}`,{method: "DELETE"});
         setList(list.filter(item => item._id !== id));
     }
 

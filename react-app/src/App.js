@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import {colors, primary, elements} from'./styleObjects/customStyles';
 import Login from './pages/Login';
 import UsersCrud from './pages/UsersCrud';
-import Layout from './Layout';
 import Dashboard from './pages/Dashboard';
+import Layout from './Layout';
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 

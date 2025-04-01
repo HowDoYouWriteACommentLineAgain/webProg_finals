@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback } from 'react';
 import Inputs from '../components/Inputs';
-import FetchUsers from '../components/FetchUsers';
+import FetchUsers from '../components/FetchComponent';
 
 export default function(){
     const [list, setList] = useState([]);
@@ -8,30 +8,17 @@ export default function(){
     const [password, setPassword] = useState('');
     const [cPassword, setCPassword] = useState('');
 
-    useEffect(()=>{
-        console.clear();
-        console.table("Table: ", username,password);
-        console.log("List is:" + list);  
-    }, [username, password]);
-
-
-    useEffect(()=>{
-        fetch("http://localhost:5000/Users")
-            .then(res => res.json())
-            .then(data => setList(data));
-    }, []);
+    // useEffect(()=>{
+    //     console.clear();
+    //     console.log(username,password);  
+    // }, [username, password, list]);
 
     function handleClick(){
-        setUsername('');
-        setPassword('');
-        setCPassword('');
-        addUser();
-    }
+        
+        const form = document.querySelector('.need-validation');
+        form.classList.add('was-validated');
 
-    async function addUser(){
-        const cPasswordsMatch = (password === cPassword);
-
-        if(!cPasswordsMatch) {
+        if((password !== cPassword)) {
             alert(`Passwords don't match`);
             return;
         }else if(!username || !password || !cPassword) {
@@ -39,6 +26,34 @@ export default function(){
             return;
         }; //early return if fields are empty
 
+        
+        form.classList.remove('was-validated');
+        setUsername('');
+        setPassword('');
+        setCPassword('');
+        addUser();
+    }
+
+    const handleChange = (stateSetter) => e => {
+        const content = e.target.value;
+        stateSetter( content);
+    }
+
+    const pInput = document.getElementsByName('password')[0];
+    const cPInput = document.getElementsByName('confirmPassword')[0];
+
+    useEffect(()=>{
+        if(password !== cPassword ){
+            pInput.classList.add('is-invalid');
+            cPInput.classList.add('is-invalid');
+        }
+        else{
+            if (pInput && pInput.classList.contains('is-invalid')) pInput.classList.remove('is-invalid');
+            if (cPInput && cPInput.classList.contains('is-invalid')) cPInput.classList.remove('is-invalid');
+        }
+    },[password,cPassword])
+
+    async function addUser(){
         try{
             console.log("Sending data:", { username, password }); // Debugging
             const res = await fetch("http://localhost:5000/Users", {
@@ -65,7 +80,7 @@ export default function(){
 
     return (
     <>
-        <fieldset className='form'>
+        <fieldset className='form need-validation'>
             <h1>User registration</h1>
             <Inputs
                 className={InputsClassName}
@@ -73,27 +88,27 @@ export default function(){
                 name="username" 
                 placeholder="username" 
                 value={username} 
-                onChange={(e)=> setUsername(e.target.value)}
+                onChange={handleChange(setUsername)}
             />
             <Inputs
                 className={InputsClassName}
-                types="text" 
+                types="password" 
                 name="password" 
                 placeholder="password" 
                 value={password} 
-                onChange={(e)=> setPassword(e.target.value)}
+                onChange={handleChange(setPassword)}
             />
             <Inputs
                 className={InputsClassName}
-                types="text" 
+                types="password" 
                 name="confirmPassword" 
                 placeholder="confirm password" 
                 value={cPassword} 
-                onChange={(e)=> setCPassword(e.target.value)}
+                onChange={handleChange(setCPassword)}
             />
             <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
         </fieldset>
-        <FetchUsers list={list} setList={setList}/>
+        <FetchUsers list={list} setList={setList} url="Users"/>
     </>
   
     );

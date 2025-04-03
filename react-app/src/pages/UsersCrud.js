@@ -67,8 +67,8 @@ export default function(){
                 alert(errorText); // Show user-friendly alert
                 throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
             }
-
-            const newListItem = await res.json();
+            const response = await res.json();
+            const newListItem = response.user;
             setList( l => [...l, newListItem]);
 
         }catch(error){

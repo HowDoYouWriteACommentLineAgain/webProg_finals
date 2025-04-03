@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
 
 require("dotenv").config();
 
@@ -27,12 +29,19 @@ mongoose.connect(process.env.MONGO_URI /*,{
 app.post("/Users", async (req, res) => {
     console.log("Received data:", req.body); // Debugging line
     try{
-        const {username, password} = req.body;
+        const {username, password} = req.body; //or if without destructuring UserConent: const AddUser = new UsersModel(req.body.UserContent);
         const hashed = await hashPassword(password);
         const AddUser = new UsersModel({username, password: hashed});
-        //or if without destructuring UserConent: const AddUser = new UsersModel(req.body.UserContent);
+        
         await AddUser.save();
-        res.json(AddUser);
+
+        const payload = {
+          user: {id:AddUser.id}
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30 minutes'});
+        res.json({user: AddUser.username, token: token});
+
     }catch(error){
         console.error("Error saving user:", error);
         if (error.code === 11000){
@@ -64,7 +73,7 @@ app.delete("/Users/:id", async (req,res)=>{
   }
 })
 
-//authenticate
+//authenticate login
 app.post("/Users/authenticate", async (req,res)=>{
   try{
     const foundUser = await UsersModel.findOne({username:req.body.username});
@@ -80,20 +89,29 @@ app.post("/Users/authenticate", async (req,res)=>{
     const {password} = req.body;
     const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    if (isMatch){
-      res.json({ success: true, message: "Authentication successful" })
-    }else{
-      res.json({success: false, message:"Authentication failed"})
+    if(!isMatch){
       const response = hashPassword(password);
       console.log(`${response}, ${hashedPassword}`);
+      return res.json({success: false, message:"Authentication failed"});
     }
+
+    const payload = {
+      user: {id:foundUser.id}
+    }
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30 minutes'});
+    res.json({ success: true, message: "Authentication successful", token: token});
 
   }catch(err){
     console.error("Error authenticating user",err );
   }
 })
 
-//TODO make app.post server request that verifies if logged in credentials are a match to any on mongo database
+//authenticate jwt token
+
+app.get('/verify',verifyToken, (req, res)=>{
+  res.status(200).json({success: true, message: 'Authenticated acknowledged'})
+})
 
 //express paths end
 
@@ -101,6 +119,22 @@ async function hashPassword(password){
   const saltRounds = 10;
   return await bcrypt.hash(password, saltRounds);
 
+}
+
+const verifyToken = (req, res, next) =>{
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  if(!token) return res.status(401).json({message: 'No Token, Access Denied'})
+  try{
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
+      if (err) return res.status(401).json({message: 'Token not valid'});
+
+        req.UsersModel = decoded;
+        next();
+    });
+  }catch(err){
+    console.error('Something went wrong in veifing Token middleware');
+    res.status(500).json({message: 'Server error'});
+  }
 }
 
 

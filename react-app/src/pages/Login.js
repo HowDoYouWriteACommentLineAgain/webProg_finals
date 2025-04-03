@@ -1,18 +1,27 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
-function Login({returnStatus, userUsername}) {
+function Login({isLoggedIn, userUsername}) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [peekPassword, setPeekPassword] = useState(false);
-  // const [isPositive, setStatus] = useState(false);
 
   const form = useRef(null);
   const uInput = useRef(null);
   const pInput = useRef(null);
+
+  const navigateOut = useNavigate();
+  const location = useLocation();
+
+  useEffect(()=>{
+
+    if(isLoggedIn === true){
+      navigateOut('/dashboard',{replace:true});
+    }
+  }, [location.pathname]);
 
   function handleClicks(){
     form.current.classList.add('was-validated');
@@ -42,10 +51,11 @@ function Login({returnStatus, userUsername}) {
           uInput.current.classList.remove('is-invalid');
           uInput.current.classList.remove('is-invalid');
           userUsername(username);
-          returnStatus('good');
+          isLoggedIn(true);
+          navigateOut('/dashboard', {replace:true});
         } else{
           userUsername('');
-          returnStatus('bad');
+          isLoggedIn(false);
           uInput.current.classList.add('is-invalid');
           pInput.current.classList.add('is-invalid');
           

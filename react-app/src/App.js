@@ -29,9 +29,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout actionOn={loginStatus} setUserAs={currentUser}/>}>
-          <Route index element={<Login returnStatus={handleReturnedStatus} userUsername={handleReturnedUser}/>} />
+          <Route index path='/login' element={<Login isLoggedIn={loginStatus} userUsername={handleReturnedUser}/>} />
           <Route path="usersCrud" element={<UsersCrud />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard status={loginStatus}/>} />
         </Route>
       </Routes>
     </BrowserRouter>

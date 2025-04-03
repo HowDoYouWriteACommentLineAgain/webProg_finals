@@ -11,14 +11,14 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState('');
+  const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
 
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout actionOn={loginStatus} setUserAs={currentUser}/>}>
+        <Route path='/' element={<Layout loginStatus={loginStatus} currentUser={currentUser}/>}>
           <Route index path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
           <Route path="usersCrud" element={<UsersCrud />} />
           <Route path="dashboard" element={<Dashboard status={loginStatus}/>} />

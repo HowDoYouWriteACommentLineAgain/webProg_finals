@@ -8,11 +8,6 @@ export default function(){
     const [password, setPassword] = useState('');
     const [cPassword, setCPassword] = useState('');
 
-    // useEffect(()=>{
-    //     console.clear();
-    //     console.log(username,password);  
-    // }, [username, password, list]);
-
     function handleClick(){
         
         const form = document.querySelector('.need-validation');
@@ -36,7 +31,8 @@ export default function(){
 
     const handleChange = (stateSetter) => e => {
         const content = e.target.value;
-        stateSetter( content);
+        stateSetter(content);
+        //todo add component targeting self to change is-invalid and is-valid tags
     }
 
     const pInput = document.getElementsByName('password')[0];

@@ -21,7 +21,8 @@ const elements = {
 }
 
 const card = {
-    width:"60%",
+    width:"90%",
+    maxHeight:'90vh',
     margin:".5em auto .5em auto",
     textAlign:"center"
 }

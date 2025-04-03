@@ -14,22 +14,12 @@ function App() {
   const [loginStatus, setLoginStatus] = useState('');
   const [currentUser, setCurrentUser] = useState('');
 
-  const handleReturnedStatus = (status) =>{
-    setLoginStatus(status);
-    console.log(`current status: ${status}`);
-    // alert('app has recieved status from login component')
-  }
-
-  const handleReturnedUser = (user) =>{
-    setCurrentUser(user);
-    console.log(`current user: ${user}`);
-  }
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout actionOn={loginStatus} setUserAs={currentUser}/>}>
-          <Route index path='/login' element={<Login isLoggedIn={loginStatus} userUsername={handleReturnedUser}/>} />
+          <Route index path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
           <Route path="usersCrud" element={<UsersCrud />} />
           <Route path="dashboard" element={<Dashboard status={loginStatus}/>} />
         </Route>

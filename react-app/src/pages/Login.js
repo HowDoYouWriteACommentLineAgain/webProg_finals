@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
-function Login({isLoggedIn, userUsername}) {
+function Login({loginStatus, setLoginStatus, setCurrentUser}) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ function Login({isLoggedIn, userUsername}) {
 
   useEffect(()=>{
 
-    if(isLoggedIn === true){
+    if(loginStatus === true){
       navigateOut('/dashboard',{replace:true});
     }
   }, [location.pathname]);
@@ -50,12 +50,12 @@ function Login({isLoggedIn, userUsername}) {
         if(data.success === true){
           uInput.current.classList.remove('is-invalid');
           uInput.current.classList.remove('is-invalid');
-          userUsername(username);
-          isLoggedIn(true);
+          setCurrentUser(username);
+          setLoginStatus(true);
           navigateOut('/dashboard', {replace:true});
         } else{
-          userUsername('');
-          isLoggedIn(false);
+          setCurrentUser('');
+          setLoginStatus(false);
           uInput.current.classList.add('is-invalid');
           pInput.current.classList.add('is-invalid');
           

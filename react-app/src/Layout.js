@@ -24,7 +24,8 @@ const Layout = ({actionOn, setUserAs}) => {
 
             <span className="navbar-nav col-md-3 col-lg-2" id="collapseNavItems">
                 <Link className="nav-item nav-link text-white" to="/login">User Login</Link>
-                <Link className="nav-item nav-link text-white" to="/usersCrud">Crud</Link>
+                
+                {/* <Link className="nav-item nav-link text-white" to="/usersCrud">Crud</Link> */}
                 {/* 
                     TODO: Eventually remove Crud here and instead have Router rerout to appropriate page
                     Make Login a modal pop-up

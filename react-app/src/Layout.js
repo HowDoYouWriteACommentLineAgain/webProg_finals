@@ -22,7 +22,7 @@ const Layout = ({actionOn, setUserAs}) => {
 
             <span className="navbar-brand col-md-3 col-lg-2 text-white px-3">Welcome: {setUserAs || '???'}</span>
 
-            <span class="nav-item">Connected From: East Avenue Medical Center | Terminal Sesson:1 | status: {actionOn || '???'}</span>
+            <span className="nav-item">Connected From: East Avenue Medical Center | Terminal Sesson:1 | status: {actionOn || '???'}</span>
 
             <span className="navbar-nav col-md-3 col-lg-2" id="collapseNavItems">
                 <Link className="nav-item nav-link text-white" to="/">User Login</Link>

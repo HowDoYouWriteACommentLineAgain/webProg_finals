@@ -32,7 +32,7 @@ function Login({returnStatus, userUsername}) {
 
     (async ()=>{
       try{
-        const res = await fetch("http://localhost:5000/Users/authenticate",{                
+        const res = await fetch("http://localhost:5000/login",{                
           method:"POST",
           headers:{"Content-Type": "application/json"},
           body:JSON.stringify({username: username, password: password})
@@ -49,8 +49,12 @@ function Login({returnStatus, userUsername}) {
         if(data.success === true){
           uInput.current.classList.remove('is-invalid');
           uInput.current.classList.remove('is-invalid');
+
+          localStorage.setItem('jwt', data.token,);
+
           userUsername(username);
           returnStatus('good');
+
         } else{
           userUsername('');
           returnStatus('bad');

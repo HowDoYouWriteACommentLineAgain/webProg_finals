@@ -9,10 +9,27 @@ const Layout = ({actionOn, setUserAs}) => {
     useEffect(()=> setStatus(actionOn), [actionOn]);
 
     useEffect(()=>{
+        const token = localStorage.getItem('jwt');
+        if (!token){
+            navigateTo('/', {replace:true});
+        }
+
         if(status === 'good' || false){
             navigateTo('/dashboard', {replace:true});
         }
     },[status]);
+
+    // const authenticate = async () => {
+    //     const token = localStorage.getItem('jwt');
+    //     const response = await fetch('/protected', {
+    //         method: 'GET',
+    //         headers:{
+    //             'authorization' : `Bearer: ${token}`
+    //         }
+    //     });
+
+    //     const data = await response.json();
+    // };
 
 
     return(

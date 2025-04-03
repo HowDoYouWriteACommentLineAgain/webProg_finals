@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
 
 require("dotenv").config();
 
@@ -65,14 +67,14 @@ app.delete("/Users/:id", async (req,res)=>{
 })
 
 //authenticate
-app.post("/Users/authenticate", async (req,res)=>{
+app.post("/login", async (req,res)=>{
   try{
     const foundUser = await UsersModel.findOne({username:req.body.username});
-
+    const message = "Username or Password incorrect"
 
     if (!foundUser){
-      console.log('User not found');
-      res.status(404).json({message:"user not found"});
+      console.log(message);
+      res.status(404).json({message:message});
       return;
     }
 
@@ -80,20 +82,24 @@ app.post("/Users/authenticate", async (req,res)=>{
     const {password} = req.body;
     const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    if (isMatch){
-      res.json({ success: true, message: "Authentication successful" })
-    }else{
-      res.json({success: false, message:"Authentication failed"})
+    if (!isMatch){
+      res.json({success: false, message:"Authentication failed: "+message});
       const response = hashPassword(password);
       console.log(`${response}, ${hashedPassword}`);
     }
+    
+    const token = jwt.sign({username: foundUser.username}, 'my key', {expiresIn:'1hr'})
+    res.json({ token, success: true, message: "Authentication successful" })
 
   }catch(err){
     console.error("Error authenticating user",err );
   }
 })
 
-//TODO make app.post server request that verifies if logged in credentials are a match to any on mongo database
+app.get('/protected', authenticateToken, (req, res) => {
+  res.send('This is a protected route');
+});
+
 
 //express paths end
 
@@ -102,6 +108,19 @@ async function hashPassword(password){
   return await bcrypt.hash(password, saltRounds);
 
 }
+
+const authenticateToken = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) return res.status(401).send('Access denied');
+
+  try {
+    const decoded = jwt.verify(token, 'secretKey');
+    req.user = decoded; // Attach decoded user info to request
+    next();
+  } catch (err) {
+    res.status(400).send('Invalid token');
+  }
+};
 
 
 

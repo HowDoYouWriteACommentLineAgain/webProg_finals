@@ -9,11 +9,16 @@ const Layout = () => {
 
             <span className="navbar-brand col-md-3 col-lg-2 text-white px-3">Welcome: User</span>
 
-            <span class="nav-item">DD/MM/YYYY | AM/PM HH:MM</span>
+            <span class="nav-item">Connected From: East Avenue Medical Center | Terminal Sesson:1</span>
 
             <span className="navbar-nav col-md-3 col-lg-2" id="collapseNavItems">
                 <Link className="nav-item nav-link" to="/">User Login</Link>
                 <Link className="nav-item nav-link" to="/usersCrud">Crud</Link>
+                {/* 
+                    TODO: Eventually remove Crud here and instead have Router rerout to appropriate page
+                    Make Login a modal pop-up
+                
+                */}
             </span>
         </span>
 

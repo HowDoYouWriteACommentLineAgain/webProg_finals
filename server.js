@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 
@@ -22,11 +23,13 @@ mongoose.connect(process.env.MONGO_URI /*,{
 
 //express paths start
 
+//creates user
 app.post("/Users", async (req, res) => {
     console.log("Received data:", req.body); // Debugging line
     try{
         const {username, password} = req.body;
-        const AddUser = new UsersModel({username, password});
+        const hashed = await hashPassword(password);
+        const AddUser = new UsersModel({username, password: hashed});
         //or if without destructuring UserConent: const AddUser = new UsersModel(req.body.UserContent);
         await AddUser.save();
         res.json(AddUser);
@@ -35,7 +38,7 @@ app.post("/Users", async (req, res) => {
         if (error.code === 11000){
             return res.status(400).json({ message: "Username already exists." });
         } 
-        res.status(500).json({message: `Error creating user${error}`});
+        res.status(500).json({message: `Error creating user: ${error}`});
     }
 });
 
@@ -61,19 +64,23 @@ app.delete("/Users/:id", async (req,res)=>{
   }
 })
 
-app.get("Users", async (req,res)=>{
+//authenticate
+app.post("/Users/authenticate", async (req,res)=>{
   try{
-    const found = await UsersModel.findOne({username:req.body.username});
+    const foundUser = await UsersModel.findOne({username:req.body.username});
 
-    if (!found){
+
+    if (!foundUser){
       console.log('User not found');
       res.status(404).json({message:"user not found"});
       return;
     }
 
-    const isMatch = found.password === req.body.password;
+    const hashedPassword = foundUser.password;
+    const {password} = req.body;
+    const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    isMatch ? res.json({ success: true, message: "Authentication successful" }) : { success: false, message: "Authentication failed" };
+    isMatch ? res.json({ success: true, message: "Authentication successful" }) : res.json({succes: false, message:"Authentication failed"});
 
   }catch(err){
     console.error("Error authenticating user",err );
@@ -83,6 +90,14 @@ app.get("Users", async (req,res)=>{
 //TODO make app.post server request that verifies if logged in credentials are a match to any on mongo database
 
 //express paths end
+
+async function hashPassword(password){
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+
+}
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=>console.log(`Server running on port: ${PORT}`));

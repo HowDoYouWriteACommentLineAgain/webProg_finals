@@ -80,7 +80,13 @@ app.post("/Users/authenticate", async (req,res)=>{
     const {password} = req.body;
     const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    isMatch ? res.json({ success: true, message: "Authentication successful" }) : res.json({succes: false, message:"Authentication failed"});
+    if (isMatch){
+      res.json({ success: true, message: "Authentication successful" })
+    }else{
+      res.json({success: false, message:"Authentication failed"})
+      const response = hashPassword(password);
+      console.log(`${response}, ${hashedPassword}`);
+    }
 
   }catch(err){
     console.error("Error authenticating user",err );

@@ -2,12 +2,12 @@ import {useState, useRef} from 'react';
 import Inputs from '../components/Inputs';
 
 
-function Login({returnStatus}) {
+function Login({returnStatus, userUsername}) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [peekPassword, setPeekPassword] = useState(false);
-//   const [isPositive, setStatus] = useState(false);
+  // const [isPositive, setStatus] = useState(false);
 
   const hardUsername = 'root';
   const hardassword = 'password';
@@ -44,14 +44,19 @@ function Login({returnStatus}) {
           throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
         }
 
-        if(res.success === true){
-          uInput.current.classList.remove('is-invalid');
-          uInput.current.classList.remove('is-invalid');
-          alert('Login success');
-        } else{
-          alert('Login success');
-        }
+        const data = await res.json();
 
+        if(data.success === true){
+          uInput.current.classList.remove('is-invalid');
+          uInput.current.classList.remove('is-invalid');
+          userUsername(username);
+          returnStatus('good');
+        } else{
+          userUsername('');
+          returnStatus('bad');
+          
+        }
+        console.log( `acknowledged: ${data.message} ${data.success}`);
 
       }catch(err){
         console.error("Error: ", err);

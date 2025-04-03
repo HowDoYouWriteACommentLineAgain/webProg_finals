@@ -11,17 +11,25 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState(false);
+  const [loginStatus, setLoginStatus] = useState('');
+  const [currentUser, setCurrentUser] = useState('');
 
   const handleReturnedStatus = (status) =>{
     setLoginStatus(status);
+    console.log(`current status: ${status}`);
+    // alert('app has recieved status from login component')
+  }
+
+  const handleReturnedUser = (user) =>{
+    setCurrentUser(user);
+    console.log(`current user: ${user}`);
   }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Login/>} />
+        <Route path='/' element={<Layout actionOn={loginStatus} setUserAs={currentUser}/>}>
+          <Route index element={<Login returnStatus={handleReturnedStatus} userUsername={handleReturnedUser}/>} />
           <Route path="usersCrud" element={<UsersCrud />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>

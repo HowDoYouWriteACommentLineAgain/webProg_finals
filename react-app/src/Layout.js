@@ -6,13 +6,35 @@ const Layout = ({actionOn, setUserAs}) => {
     const [status, setStatus] = useState('status');
     const navigateTo = useNavigate();
 
-    useEffect(()=> setStatus(actionOn), [actionOn]);
+    // useEffect(()=> setStatus(actionOn), [actionOn]);
 
     useEffect(()=>{
-        if(status === 'good' || false){
-            navigateTo('/dashboard', {replace:true});
-        }
-    },[status]);
+
+        const token = localStorage.getItem('token');
+        if(!token) navigateTo('/');
+
+        (async()=>{
+            try{
+                const response = await fetch('/verify', {
+                    method:'GET',
+                    headers:{'Authorization': `Bearer ${token}`}
+                })
+    
+                const data = await response.json();
+    
+                if (!data.success){
+                    setStatus('bad');
+                } else {
+                    setStatus('good');
+                    navigateTo('/dashboard',{replace:true});
+                }
+            }catch(error){
+                console.error("Error verifying token: ", error);
+                setStatus('bad');
+                navigateTo('/');
+            }
+        })();
+    },[]);
 
 
     return(

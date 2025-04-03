@@ -1,4 +1,5 @@
 import {useState, useRef} from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
@@ -8,9 +9,6 @@ function Login({returnStatus, userUsername}) {
   const [password, setPassword] = useState('');
   const [peekPassword, setPeekPassword] = useState(false);
   // const [isPositive, setStatus] = useState(false);
-
-  const hardUsername = 'root';
-  const hardassword = 'password';
 
   const form = useRef(null);
   const uInput = useRef(null);
@@ -23,12 +21,6 @@ function Login({returnStatus, userUsername}) {
     }
 
     form.current.classList.remove('was-validated');
-
-    const usernameMatch = (username === hardUsername);
-    const passwordMatch = (password === hardassword);
-
-    if (!usernameMatch) uInput.current.classList.add('is-invalid');
-    if (!passwordMatch) pInput.current.classList.add('is-invalid');
 
     (async ()=>{
       try{
@@ -54,6 +46,8 @@ function Login({returnStatus, userUsername}) {
         } else{
           userUsername('');
           returnStatus('bad');
+          uInput.current.classList.add('is-invalid');
+          pInput.current.classList.add('is-invalid');
           
         }
         console.log( `acknowledged: ${data.message} ${data.success}`);

@@ -98,6 +98,18 @@ app.post("/Doctors", async (req, res)=>{
 })
 //delete Doctors
 
+app.delete("/Doctors/:id", async (req,res)=>{
+  try{
+      const {id} = req.params;
+      await DoctorsModel.findByIdAndDelete(id);
+      
+      // Respond with a success message
+      res.status(200).json({ message: "Doctor info deleted successfully" });
+  }catch(error){
+      res.status(500).json({message:"Error Deleting Doctor info"});
+  }
+})
+
 //authenticate
 app.post("/Users/authenticate", async (req,res)=>{
   try{

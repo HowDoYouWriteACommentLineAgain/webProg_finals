@@ -52,9 +52,13 @@ export default function UsersCrud(){
     async function addUser(){
         try{
             console.log("Sending data:", { username, password }); // Debugging
+            const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:5000/Users", {
                 method:"POST",
-                headers:{"Content-Type": "application/json"},
+                headers:{
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 body:JSON.stringify({username: username, password: password})
             })
 

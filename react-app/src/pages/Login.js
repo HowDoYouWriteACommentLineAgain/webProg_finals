@@ -52,7 +52,8 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
           uInput.current.classList.remove('is-invalid');
           setCurrentUser(username);
           setLoginStatus(true);
-          navigateOut('/dashboard', {replace:true});
+          localStorage.setItem('token', data.token);
+          navigateOut('/usersCrud', {replace:true});
         } else{
           setCurrentUser('');
           setLoginStatus(false);

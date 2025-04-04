@@ -11,9 +11,15 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
     const [filtered, setFiltered] = useState([]);
 
     const handleDelete = async (id) =>{
-
-        await fetch(`http://localhost:5000/${url}/${id}`,{method: "DELETE"});
-        setList(list.filter(item => item._id !== id));
+        const token = localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/${url}/${id}`,{
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content Type": "application/json"
+            }
+        });
+        if(res.json().status === 200) setList(list.filter(item => item._id !== id));
     }
 
     function capitalizeFirst(val){

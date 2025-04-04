@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
@@ -20,11 +21,40 @@ mongoose.connect(process.env.MONGO_URI /*,{
 .then(()=>console.log("MongoDB Connected"))
 .catch((err)=> console.log(err));
 
+//middleware authentication
+const requireAuth = (req, res, next) =>{
+  const header = req.headers.authorization;
+  if(!header || !header.startsWith("Bearer ")){
+    return res.status(404).json({error:"Unauthorized"});
+  }
+
+  const token = header.split(" ")[1];
+
+  if(!token) res.status(401).json({error: "Unauthorized"});
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken)=>{
+    if(err){
+      console.error('Error: ', err.message);
+      res.status(401).json({error: "Invalid Token"});
+    }else{
+      console.log(decodedToken);
+      next();
+    }
+  })
+
+}
+
 
 //express paths start
 
+//IsUser Authorized?
+
+app.get("/AccessProtected", requireAuth, async (req,res)=>{
+  res.status(200).json({message: 'User Authorized to access protected route'});
+})
+
 //creates user
-app.post("/Users", async (req, res) => {
+app.post("/Users", requireAuth ,async (req, res) => {
     console.log("Received data:", req.body); // Debugging line
     try{
         const {username, password} = req.body;
@@ -53,7 +83,7 @@ app.get("/Users", async (req, res) => {
 });
   
 //delete Users by id
-app.delete("/Users/:id", async (req,res)=>{
+app.delete("/Users/:id", requireAuth, async (req,res)=>{
   try{
       const {id} = req.params;
       await UsersModel.findByIdAndDelete(id);
@@ -62,6 +92,35 @@ app.delete("/Users/:id", async (req,res)=>{
       res.status(200).json({ message: "User deleted successfully" });
   }catch(error){
       res.status(500).json({message:"Error Deleting User"});
+  }
+})
+
+//authenticate user login
+app.post("/Users/authenticate", async (req,res)=>{
+  try{
+    const foundUser = await UsersModel.findOne({username:req.body.username});
+
+    if (!foundUser){
+      console.log('User not found');
+      res.status(404).json({message:"user not found"});
+      return;
+    }
+
+    const hashedPassword = foundUser.password;
+    const {password} = req.body;
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (isMatch){
+      const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {expiresIn: '5m'});
+      res.json({ success: true, message: "Authentication successful" , token: token});
+    }else{
+      res.json({success: false, message:"Authentication failed"})
+      const response = hashPassword(password);
+      console.log(`${response}, ${hashedPassword}`);
+    }
+
+  }catch(err){
+    console.error("Error authenticating user",err );
   }
 })
 
@@ -80,7 +139,7 @@ app.get("/Doctors", async (req, res)=>{
 
 //Add Doctor
 
-app.post("/Doctors", async (req, res)=>{
+app.post("/Doctors", requireAuth ,async (req, res)=>{
   console.log("Received data:", req.body);
   try{
     const {name, specialization, days, availability} = req.body;
@@ -110,34 +169,7 @@ app.delete("/Doctors/:id", async (req,res)=>{
   }
 })
 
-//authenticate
-app.post("/Users/authenticate", async (req,res)=>{
-  try{
-    const foundUser = await UsersModel.findOne({username:req.body.username});
 
-
-    if (!foundUser){
-      console.log('User not found');
-      res.status(404).json({message:"user not found"});
-      return;
-    }
-
-    const hashedPassword = foundUser.password;
-    const {password} = req.body;
-    const isMatch = await bcrypt.compare(password, hashedPassword);
-
-    if (isMatch){
-      res.json({ success: true, message: "Authentication successful" })
-    }else{
-      res.json({success: false, message:"Authentication failed"})
-      const response = hashPassword(password);
-      console.log(`${response}, ${hashedPassword}`);
-    }
-
-  }catch(err){
-    console.error("Error authenticating user",err );
-  }
-})
 
 //TODO make app.post server request that verifies if logged in credentials are a match to any on mongo database
 

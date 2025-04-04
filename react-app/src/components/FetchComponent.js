@@ -28,7 +28,8 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
         }
 
         const data = await res.json();
-        if(data.status === 200) setList(list.filter(item => item._id !== id));
+        console.log(res.status);
+        if(res.status === 200) setList(list.filter(item => item._id !== id));
     }
 
     function capitalizeFirst(val){

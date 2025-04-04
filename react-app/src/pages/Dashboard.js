@@ -3,6 +3,9 @@ import FetchDoctors from '../components/FetchComponent';
 
 export default function Dashboard(){
     const [list, setList] = useState([]);
+    const showDelete = async() =>{
+        
+    }
 
     return(
         <>

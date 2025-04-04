@@ -54,6 +54,10 @@ app.get("/AccessProtected", requireAuth, async (req,res)=>{
   res.status(200).json({message: 'User Authorized to access protected route'});
 })
 
+app.get("/checkTokenValidity", requireAuth, async(req, res)=>{
+  res.status(200).json({message: 'userToken checked and verified'});
+})
+
 //creates user
 app.post("/Users", requireAuth ,async (req, res) => {
     console.log("Received data:", req.body); // Debugging line

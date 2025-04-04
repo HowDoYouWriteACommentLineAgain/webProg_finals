@@ -1,9 +1,10 @@
 import {Outlet, Navigate} from 'react-router-dom';
+// import checkToken from '../scripts/checkToken';
 
-const ProtectedRoutes = ({path, user}) => {
-    const recievedUser = user ?? null;
+const ProtectedRoutes = ({path, status}) => {
+    const recievedStatus = status ?? null;
     const defaultPath = path ?? "/";
-    return recievedUser ? <Outlet /> : <Navigate to={defaultPath} replace={true} />
+    return (recievedStatus === true) ? <Outlet /> : <Navigate to={defaultPath} replace={true} />
 }
 
 export default ProtectedRoutes;

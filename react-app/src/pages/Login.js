@@ -17,15 +17,10 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
 
   function handleClicks(){
     form.current.classList.add('was-validated');
-    if (!username || !password){
-      return;
-    }
-
+    if (!username || !password) return;
+    
     form.current.classList.remove('was-validated');
-
     checkDatabase();
-
-
   }
 
   const handleChange = (stateSetter) => e => {

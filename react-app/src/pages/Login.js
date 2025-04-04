@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
-function Login({loginStatus, setLoginStatus, setCurrentUser}) {
+function Login({loginStatus, setLoginStatus}) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
   function handleClicks(){
     form.current.classList.add('was-validated');
     if (!username || !password) return;
-    
+
     form.current.classList.remove('was-validated');
     checkDatabase();
   }
@@ -49,12 +49,11 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
       if(data.success === true){
         uInput.current.classList.remove('is-invalid');
         uInput.current.classList.remove('is-invalid');
-        setCurrentUser(username);
         setLoginStatus(true);
         localStorage.setItem('token', data.token);
         navigateOut('/usersCrud', {replace:true});
       } else{
-        setCurrentUser('');
+        
         setLoginStatus(false);
         uInput.current.classList.add('is-invalid');
         pInput.current.classList.add('is-invalid');

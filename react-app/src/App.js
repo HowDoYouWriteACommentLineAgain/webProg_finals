@@ -9,17 +9,27 @@ import UsersCrud from './pages/UsersCrud';
 import Dashboard from './pages/Dashboard';
 import AddDashboard from "./pages/AddDashboard";
 import NotFound from "./pages/NotFound";
+import checkToken from "./scripts/checkToken";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
-  const [currentUser, setCurrentUser] = useState('');
+
+  useEffect(()=>{
+
+    const checkForToken = async () =>{
+        const isTokenValid = await checkToken();
+        setLoginStatus(isTokenValid);
+    }
+    checkForToken();
+
+  },[])
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout loginStatus={loginStatus} currentUser={currentUser}/>}>
-          <Route index path='/' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
-          <Route path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
+        <Route path='/' element={<Layout loginStatus={loginStatus}/>}>
+          <Route index path='/' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} />} />
+          <Route path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route element={<ProtectedRoutes status={loginStatus}/>}>
             <Route path="usersCrud" element={<UsersCrud />} />

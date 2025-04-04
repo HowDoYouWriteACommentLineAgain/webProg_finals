@@ -27,7 +27,7 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
             navigate('/login',{replace:true});
         }
 
-        const data = await res.json();
+        // const data = await res.json();
         console.log(res.status);
         if(res.status === 200) setList(list.filter(item => item._id !== id));
     }

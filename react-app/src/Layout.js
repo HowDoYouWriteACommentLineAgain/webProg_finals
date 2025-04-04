@@ -2,13 +2,13 @@ import { Outlet, Link} from "react-router-dom";
 import {primary, card} from'./styleObjects/customStyles';
 import { useEffect } from "react";
 
-const Layout = ({loginStatus, currentUser}) => {
+const Layout = ({loginStatus}) => {
     
     return(
         <>
         <nav className='navbar navbar-expand-lg bg-body-indigo text-white' style={primary}>
             <span className="container-fluid pe-5">
-                <span className="navbar-brand col-2 text-white px-3">Welcome: {currentUser || '???'}</span>
+                <span className="navbar-brand col-2 text-white px-3">Welcome | Status {(loginStatus) ? 'logged in' : 'logged out'}</span>
                 {/* <span className="nav-item  col-5">Connected East Avenue Medical Center | status: {loginStatus || 'Please login'}</span> */}
 
                 <span className="navbar-nav d-flex" id="collapseNavItems">

@@ -12,7 +12,7 @@ const Layout = ({loginStatus}) => {
 
                 <span className="navbar-nav d-flex" id="collapseNavItems">
                     {!loginStatus && <div className="nav-item"><Link className="nav-link text-white" to="/login">User Login</Link></div>}
-                    {loginStatus && <div className="nav-item"><Link className="nav-link text-white" to="/login">Logout</Link></div>}
+                    {loginStatus && <div className="nav-item"><Link className="nav-link text-white" to="/logout">Logout</Link></div>}
                     
                     <div className="nav-item"><Link className="nav-link text-white" to="/dashboard">Dashboard</Link></div>
                     <Link className="nav-item nav-link text-white" to="/addDashboard">Create</Link>

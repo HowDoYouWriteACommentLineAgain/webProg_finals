@@ -1,17 +1,7 @@
-import { Outlet, Link,  useNavigate, useLocation } from "react-router-dom";
+import { Outlet, Link} from "react-router-dom";
 import {primary, card} from'./styleObjects/customStyles';
-import { useEffect } from "react";
 
 const Layout = ({loginStatus, currentUser}) => {
-    const navigateTo = useNavigate();
-    const currentLocation = useLocation();
-
-    // useEffect(()=>{
-    //     if(loginStatus === false){
-    //         navigateTo('/login', {replace:true});
-    //     }
-    // },[currentLocation.pathname, loginStatus, navigateTo]);
-
 
     return(
         <>
@@ -40,7 +30,6 @@ const Layout = ({loginStatus, currentUser}) => {
 
         <div className="card" style={card}>
             <div className="card-body">
-                {/* <h1 className="card-title"></h1> */}
                 <Outlet />
             </div>
         </div>

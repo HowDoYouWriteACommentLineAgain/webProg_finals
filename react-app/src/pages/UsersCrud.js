@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect } from 'react';
 import Inputs from '../components/Inputs';
 import FetchUsers from '../components/FetchComponent';
 
-export default function(){
+export default function UsersCrud(){
     const [list, setList] = useState([]);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

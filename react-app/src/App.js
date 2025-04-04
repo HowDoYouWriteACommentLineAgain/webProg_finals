@@ -23,9 +23,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout loginStatus={loginStatus} currentUser={currentUser}/>}>
           <Route index path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route element={<ProtectedRoutes user={currentUser} path="/login"/>}>
             <Route path="usersCrud" element={<UsersCrud />} />
-            <Route path="dashboard" element={<Dashboard />} />
             <Route path="addDashboard" element={<AddDashboard />} />
           </Route>
 

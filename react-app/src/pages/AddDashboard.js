@@ -2,7 +2,6 @@ import React, {useState } from 'react';
 import Inputs from '../components/Inputs';
 
 export default function AddDashboard(){
-    const [list, setList] = useState('');
     const [name, setName] = useState('');
     const [spec, setSpec] = useState('');
     const [days, setDays] = useState('');
@@ -35,9 +34,7 @@ export default function AddDashboard(){
                 alert(errorText); // Show user-friendly alert
                 throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
             }
-
-            const newListItem = await res.json();
-            setList(l => [...l, newListItem]);
+            
             alert('Item added Successfuly');
         }catch(error){
             console.error("Error adding Doctor: ", error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 // import {colors, primary, elements} from'./styleObjects/customStyles';
 import Layout from './Layout';
@@ -8,10 +8,6 @@ import Login from './pages/Login';
 import UsersCrud from './pages/UsersCrud';
 import Dashboard from './pages/Dashboard';
 import AddDashboard from "./pages/AddDashboard";
-
-
-
-
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -26,7 +22,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route element={<ProtectedRoutes user={currentUser} path="/login"/>}>
             <Route path="usersCrud" element={<UsersCrud />} />
-            <Route path="addDashboard" element={<AddDashboard />} />
+            <Route path="addDashboard" element={<AddDashboard/>} />
           </Route>
 
         </Route>

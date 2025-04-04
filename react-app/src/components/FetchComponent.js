@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router';
 
 export default function FetchUsers({list, setList, url, showDelete, filter}){
@@ -9,7 +9,11 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
             .then(data => setList(data));
     }, []);
 
-    const [filtered, setFiltered] = useState([]);
+
+    // const [filtered, setFiltered] = useState([]);
+
+
+
     const navigate = useNavigate();
 
     const handleDelete = async (id) =>{
@@ -37,7 +41,7 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
     }
 
     function appendMD(key, val){
-        return (key === 'name') && val + ' MD.' || val;
+        return ((key === 'name') && val + ' MD.' )|| val;
     }
 
     return (

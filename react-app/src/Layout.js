@@ -1,6 +1,5 @@
 import { Outlet, Link} from "react-router-dom";
 import {primary, card} from'./styleObjects/customStyles';
-import { useEffect } from "react";
 
 const Layout = ({loginStatus}) => {
     

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback } from 'react';
 import Inputs from '../components/Inputs';
 
-export default function EditDashboard(){
+export default function AddDashboard(){
     const [list, setList] = useState('');
     const [name, setName] = useState('');
     const [spec, setSpec] = useState('');

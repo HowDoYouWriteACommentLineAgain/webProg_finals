@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FetchDoctors from '../components/FetchComponent';
 
-export default function Dashboard({status}){
+export default function Dashboard(){
 
     const navigateOut = useNavigate();
     const location = useLocation();

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 // import {colors, primary, elements} from'./styleObjects/customStyles';
+import Layout from './Layout';
+import ProtectedRoutes from './components/ProtectedRoutes';
+
 import Login from './pages/Login';
 import UsersCrud from './pages/UsersCrud';
 import Dashboard from './pages/Dashboard';
-import Layout from './Layout';
-
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import AddDashboard from "./pages/AddDashboard";
+
+
 
 
 
@@ -21,10 +23,12 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout loginStatus={loginStatus} currentUser={currentUser}/>}>
           <Route index path='/login' element={<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} setCurrentUser={setCurrentUser}/>} />
-          <Route path="usersCrud" element={<UsersCrud />} />
-          <Route path="dashboard" element={<Dashboard status={loginStatus}/>} />
-          <Route path="addDashboard" element={<AddDashboard status={loginStatus}/>} />
-          {/* TODO PROTECTED ROUTES COMPONENT */}
+          <Route element={<ProtectedRoutes user={currentUser} path="/login"/>}>
+            <Route path="usersCrud" element={<UsersCrud />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="addDashboard" element={<AddDashboard />} />
+          </Route>
+
         </Route>
       </Routes>
     </BrowserRouter>

@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import UsersCrud from './pages/UsersCrud';
 import Dashboard from './pages/Dashboard';
 import AddDashboard from "./pages/AddDashboard";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -24,7 +25,7 @@ function App() {
             <Route path="usersCrud" element={<UsersCrud />} />
             <Route path="addDashboard" element={<AddDashboard/>} />
           </Route>
-
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

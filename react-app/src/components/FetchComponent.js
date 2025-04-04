@@ -16,11 +16,19 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
         setList(list.filter(item => item._id !== id));
     }
 
+    function capitalizeFirst(val){
+        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+    }
+
+    function appendMD(key, val){
+        return (key === 'name') && val + ' MD.' || val;
+    }
+
     return (
-        <table className="table">
+        <table className="table table-striped table-hover">
             <thead>
                 <tr>
-                    { list[0] && Object.keys(list[0]).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && <th key={jsonKey}>{jsonKey}</th>))}
+                    { list[0] && Object.keys(list[0]).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && <th key={jsonKey}>{capitalizeFirst(jsonKey)}</th>))}
                     { (showDelete === true) && (<th>Actions</th>)}
                 </tr>
             </thead>
@@ -28,7 +36,7 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
                 {list.map( listItem => (
                     <tr key={listItem._id}> 
                         {
-                            Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{listItem[jsonKey]}</td>)))
+                            Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{appendMD(jsonKey,listItem[jsonKey])}</td>)))
                         }
                         {(showDelete === true) &&   <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td>}
 

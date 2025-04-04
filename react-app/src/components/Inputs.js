@@ -4,7 +4,7 @@ function Inputs({name, types, placeholder, onClick, onChange, disabled, value, c
   
       <input 
         id={id}
-        className={className}
+        className={className +" form-control form-control-lg mb-3" ?? "form-control form-control-lg mb-3"}
         value={value}
         type={types ?? "text"} 
         name={name}

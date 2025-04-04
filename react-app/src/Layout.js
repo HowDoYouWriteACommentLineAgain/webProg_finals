@@ -1,21 +1,29 @@
 import { Outlet, Link} from "react-router-dom";
 import {primary, card} from'./styleObjects/customStyles';
+import { useEffect } from "react";
 
 const Layout = ({loginStatus, currentUser}) => {
 
+    useEffect(()=>{
+
+    },[]);
+
+    
     return(
         <>
         <nav className='navbar navbar-expand-lg bg-body-indigo text-white' style={primary}>
             <span className="container-fluid pe-5">
-
                 <span className="navbar-brand col-2 text-white px-3">Welcome: {currentUser || '???'}</span>
                 {/* <span className="nav-item  col-5">Connected East Avenue Medical Center | status: {loginStatus || 'Please login'}</span> */}
 
-                <span className="navbar-nav col-4" id="collapseNavItems">
-                    <Link className="nav-item nav-link text-white" to="/login">User Login</Link>
-                    <Link className="nav-item nav-link text-white" to="/dashboard">Dashboard</Link>
-                    <Link className="nav-item nav-link text-white" to="/usersCrud">Crud</Link>
-                    <Link className="nav-item nav-link text-white" to="/addDashboard">Add Dashboard</Link>
+                <span className="navbar-nav d-flex" id="collapseNavItems">
+                    {!loginStatus && <div className="nav-item"><Link className="nav-link text-white" to="/login">User Login</Link></div>}
+                    {loginStatus && <div className="nav-item"><Link className="nav-link text-white" to="/logout">Logout</Link></div>}
+                    <div className="nav-item"><Link className="nav-link text-white" to="/dashboard">Dashboard</Link></div>
+                    
+                    {/* <Link className="nav-item nav-link text-white" to="/addDashboard">Create</Link> */}
+                    {/* <Link className="nav-item nav-link text-white" to="/usersCrud">Crud</Link> */}
+                    
                 </span>
                     {/* 
                         TODO: Eventually remove Crud here and instead have Router rerout to appropriate page

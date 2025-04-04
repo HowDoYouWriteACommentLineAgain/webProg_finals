@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const UsersModel = require("./models/Users.js");
-const DoctorsModel = require("./models/Users.js");
+const DoctorsModel = require("./models/DoctorSchema.js");
 
 const app = express();
 app.use(express.json());
@@ -91,7 +91,7 @@ app.post("/Doctors", async (req, res)=>{
   }catch(error){
     console.error("Error saving user:", error);
     if (error.code === 11000){
-        return res.status(400).json({ message: "Username already exists." });
+        return res.status(400).json({ message: "Name: No duplicate names" });
     } 
     res.status(500).json({message: `Error creating user: ${error}`});
   }

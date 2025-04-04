@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 
-export default function FetchUsers({list, setList, url, showDelete}){
+export default function FetchUsers({list, setList, url, showDelete, filter}){
 
     useEffect(()=>{
         fetch(`http://localhost:5000/${url}`)
             .then(res => res.json())
             .then(data => setList(data));
     }, []);
+
+    const [filtered, setFiltered] = useState([]);
 
     const handleDelete = async (id) =>{
 

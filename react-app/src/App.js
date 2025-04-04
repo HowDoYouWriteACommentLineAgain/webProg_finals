@@ -14,6 +14,37 @@ function App() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
 
+  // useEffect(()=>{
+  //   checkUserToken();
+  // },[currLocation, loginStatus]);
+
+  // async function checkUserToken(){
+  //   try{
+  //     const token = localStorage.getItem('token');
+  //     const res = await fetch('http://localhost:5000/AccessProtected',{
+  //       method:"GET",
+  //       headers:{
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${token}`
+  //       }
+  //     });
+  
+  //     if(res.status === 200){
+  //       setLoginStatus(true);
+  //       navigateOut('/dashboard',{replace:true});
+  //     }
+      
+  //     if(res.status === 401){
+  //       console.log("invalid token removing");
+  //       localStorage.removeItem('token');
+  //       setLoginStatus(false);
+  //       setCurrentUser('');
+  //       navigateOut('/login', {replace:true});
+  //     };
+  //   }catch(error){
+  //     console.error("Error in Login: ", error)
+  //   }
+  // }
 
   return (
     <BrowserRouter>
@@ -34,6 +65,8 @@ function App() {
 }
 
 export default App;
+
+
 
 /* <Login  returnStatus={handleReturnedStatus}/>
 <br />

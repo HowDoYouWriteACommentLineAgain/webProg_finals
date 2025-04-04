@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router';
 
 export default function FetchUsers({list, setList, url, showDelete, filter}){
 
@@ -9,17 +10,25 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
     }, []);
 
     const [filtered, setFiltered] = useState([]);
+    const navigate = useNavigate();
 
     const handleDelete = async (id) =>{
         const token = localStorage.getItem("token");
+        if(!token) throw new Error("No Token Found");
         const res = await fetch(`http://localhost:5000/${url}/${id}`,{
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content Type": "application/json"
+                "Content-Type": "application/json"
             }
         });
-        if(res.json().status === 200) setList(list.filter(item => item._id !== id));
+        if(res.status === 401){
+            alert('Session Error. Please log again');
+            navigate('/login',{replace:true});
+        }
+
+        const data = await res.json();
+        if(data.status === 200) setList(list.filter(item => item._id !== id));
     }
 
     function capitalizeFirst(val){

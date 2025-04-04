@@ -1,5 +1,5 @@
-import {useState, useRef, useEffect} from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import {useState, useRef} from 'react';
+import { useNavigate } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
@@ -14,14 +14,6 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
   const pInput = useRef(null);
 
   const navigateOut = useNavigate();
-  const location = useLocation();
-
-  useEffect(()=>{
-
-    if(loginStatus === true){
-      navigateOut('/dashboard',{replace:true});
-    }
-  }, [location.pathname]);
 
   function handleClicks(){
     form.current.classList.add('was-validated');
@@ -31,42 +23,7 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
 
     form.current.classList.remove('was-validated');
 
-    (async ()=>{
-      try{
-        const res = await fetch("http://localhost:5000/Users/authenticate",{                
-          method:"POST",
-          headers:{"Content-Type": "application/json"},
-          body:JSON.stringify({username: username, password: password})
-        })
-  
-        if (!res.ok) {
-          const errorText = await res.text(); // Get error details
-          alert(errorText); // Show user-friendly alert
-          throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
-        }
-
-        const data = await res.json();
-
-        if(data.success === true){
-          uInput.current.classList.remove('is-invalid');
-          uInput.current.classList.remove('is-invalid');
-          setCurrentUser(username);
-          setLoginStatus(true);
-          localStorage.setItem('token', data.token);
-          navigateOut('/usersCrud', {replace:true});
-        } else{
-          setCurrentUser('');
-          setLoginStatus(false);
-          uInput.current.classList.add('is-invalid');
-          pInput.current.classList.add('is-invalid');
-          
-        }
-        console.log( `acknowledged: ${data.message} ${data.success}`);
-
-      }catch(err){
-        console.error("Error: ", err);
-      }
-    })();
+    checkDatabase();
 
 
   }
@@ -76,6 +33,43 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
     e.target.classList.remove('is-invalid');
     stateSetter( content);
     
+  }
+
+  async function checkDatabase(){
+    try{
+      const res = await fetch("http://localhost:5000/Users/authenticate",{                
+        method:"POST",
+        headers:{"Content-Type": "application/json"},
+        body:JSON.stringify({username: username, password: password})
+      })
+  
+      if (!res.ok) {
+        const errorText = await res.text(); // Get error details
+        alert(errorText); // Show user-friendly alert
+        throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
+      }
+  
+      const data = await res.json();
+  
+      if(data.success === true){
+        uInput.current.classList.remove('is-invalid');
+        uInput.current.classList.remove('is-invalid');
+        setCurrentUser(username);
+        setLoginStatus(true);
+        localStorage.setItem('token', data.token);
+        navigateOut('/usersCrud', {replace:true});
+      } else{
+        setCurrentUser('');
+        setLoginStatus(false);
+        uInput.current.classList.add('is-invalid');
+        pInput.current.classList.add('is-invalid');
+        
+      }
+      console.log( `acknowledged: ${data.message} ${data.success}`);
+  
+    }catch(err){
+      console.error("Error: ", err);
+    }
   }
 
   return (
@@ -122,3 +116,5 @@ function Login({loginStatus, setLoginStatus, setCurrentUser}) {
 }
 
 export default Login;
+
+

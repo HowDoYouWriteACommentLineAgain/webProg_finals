@@ -16,7 +16,7 @@ app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI /*,{
     // useNewUrlParser:true,
-    // useUnifiedParser:true,
+    // useUnifiedTopology:true,
 }*/)
 .then(()=>console.log("MongoDB Connected"))
 .catch((err)=> console.log(err));
@@ -30,14 +30,15 @@ const requireAuth = (req, res, next) =>{
 
   const token = header.split(" ")[1];
 
-  if(!token) res.status(401).json({error: "Unauthorized"});
+  if(!token) return res.status(401).json({error: "Unauthorized"});
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken)=>{
     if(err){
       console.error('Error: ', err.message);
-      res.status(401).json({error: "Invalid Token"});
+      return res.status(401).json({error: "Invalid Token"});
     }else{
       console.log(decodedToken);
+      req.user(decodedToken);
       next();
     }
   })
@@ -62,7 +63,7 @@ app.post("/Users", requireAuth ,async (req, res) => {
         const AddUser = new UsersModel({username, password: hashed});
         //or if without destructuring UserConent: const AddUser = new UsersModel(req.body.UserContent);
         await AddUser.save();
-        res.json(AddUser);
+        return res.json(AddUser);
     }catch(error){
         console.error("Error saving user:", error);
         if (error.code === 11000){
@@ -76,9 +77,9 @@ app.post("/Users", requireAuth ,async (req, res) => {
 app.get("/Users", async (req, res) => {
     try {
       const UsersList = await UsersModel.find();
-      res.json(UsersList);
+      return res.json(UsersList);
     } catch (error) {
-      res.status(500).json({ message: `Error fetching Users: ${error}` });
+      return res.status(500).json({ message: `Error fetching Users: ${error}` });
     }
 });
   
@@ -112,26 +113,24 @@ app.post("/Users/authenticate", async (req,res)=>{
 
     if (isMatch){
       const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {expiresIn: '5m'});
-      res.json({ success: true, message: "Authentication successful" , token: token});
+      return res.json({ success: true, message: "Authentication successful" , token: token});
     }else{
-      res.json({success: false, message:"Authentication failed"})
-      const response = hashPassword(password);
-      console.log(`${response}, ${hashedPassword}`);
+      return res.json({success: false, message:"Authentication failed"})
+      // const response = hashPassword(password);
+      // console.log(`${response}, ${hashedPassword}`);
     }
 
   }catch(err){
     console.error("Error authenticating user",err );
   }
-})
+});
 
-let doctors = [];
 
 //get All Doctors
 app.get("/Doctors", async (req, res)=>{
   try {
     const DoctorsList = await DoctorsModel.find();
-    doctors = DoctorsList;
-    res.json(DoctorsList);
+    return res.json(DoctorsList);
   }catch (error){
     res.status(500).json({message: `Error fetching Doctors: ${error}`});
   }
@@ -146,7 +145,7 @@ app.post("/Doctors", requireAuth ,async (req, res)=>{
     const AddDoctor = new DoctorsModel({name: name, specialization: specialization, days: days, availability: availability});
     await AddDoctor.save();
     doctors = [...doctors, AddDoctor];
-    res.json(AddDoctor);
+    return res.json(AddDoctor);
   }catch(error){
     console.error("Error saving user:", error);
     if (error.code === 11000){

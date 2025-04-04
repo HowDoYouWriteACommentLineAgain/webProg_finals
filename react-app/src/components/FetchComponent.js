@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-export default function FetchUsers({list, setList, url}){
+export default function FetchUsers({list, setList, url, showDelete}){
 
     useEffect(()=>{
         fetch(`http://localhost:5000/${url}`)
@@ -19,6 +19,7 @@ export default function FetchUsers({list, setList, url}){
             <thead>
                 <tr>
                     { list[0] && Object.keys(list[0]).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && <th key={jsonKey}>{jsonKey}</th>))}
+                    { (showDelete === true) && (<th>Actions</th>)}
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,7 @@ export default function FetchUsers({list, setList, url}){
                         {
                             Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{listItem[jsonKey]}</td>)))
                         }
+                        {(showDelete === true) &&   <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td>}
 
                         {/* 
                             fist map takes the list of objects into

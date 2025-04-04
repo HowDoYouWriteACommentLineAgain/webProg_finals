@@ -104,7 +104,7 @@ export default function(){
             />
             <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
         </fieldset>
-        <FetchUsers list={list} setList={setList} url="Users"/>
+        <FetchUsers list={list} setList={setList} url="Users" showDelete={true}/>
     </>
   
     );

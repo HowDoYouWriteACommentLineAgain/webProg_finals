@@ -9,6 +9,7 @@ import Logout from './pages/Logout';
 import UsersCrud from './pages/UsersCrud';
 import Dashboard from './pages/Dashboard';
 import AddDashboard from "./pages/AddDashboard";
+import UpdatePage from "./pages/UpdatePage";
 import NotFound from "./pages/NotFound";
 import checkToken from "./scripts/checkToken";
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard loginStatus={loginStatus}/>} />
           <Route element={<ProtectedRoutes status={loginStatus}/>}>
             <Route path='logout' element={<Logout setLoginStatus={setLoginStatus} />} />
+            <Route path='edit/:id' element={<UpdatePage />} />
             <Route path="usersCrud" element={<UsersCrud />} />
             <Route path="addDashboard" element={<AddDashboard/>} />
           </Route>

@@ -106,7 +106,7 @@ export default function UsersCrud(){
                 value={cPassword} 
                 onChange={handleChange(setCPassword)}
             />
-            <Inputs types="submit" name="submit" onClick={()=>handleClick()}/>
+            <button className='btn btn-primary col-11' onClick={()=>handleClick()}> Submit </button>
         </fieldset>
         <FetchUsers list={list} setList={setList} url="Users" showDelete={true}/>
     </>

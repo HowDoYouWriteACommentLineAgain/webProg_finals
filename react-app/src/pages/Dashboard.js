@@ -4,12 +4,12 @@ import checkToken from "../scripts/checkToken";
 
 export default function Dashboard({loginStatus}){
     const [list, setList] = useState([]);
-    const [deletePermission, permitDelete] = useState(false);
+    const [permissions, setPermit] = useState(false);
 
     useEffect(()=>{
         const checkForToken = async () =>{
             const isTokenValid = await checkToken();
-            permitDelete(isTokenValid);
+            setPermit(isTokenValid);
         }
         checkForToken();
     },[loginStatus]);
@@ -18,7 +18,7 @@ export default function Dashboard({loginStatus}){
     return(
         <>
             <h1>Dashboard</h1>
-            <FetchDoctors list={list} setList={setList} url="Doctors" showDelete={deletePermission} />
+            <FetchDoctors list={list} setList={setList} url="Doctors" showDelete={permissions} showUpdate={permissions}/>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router';
 
-export default function FetchUsers({list, setList, url, showDelete, filter}){
+export default function FetchUsers({list, setList, url, showDelete, showUpdate}){
 
     useEffect(()=>{
         fetch(`http://localhost:5000/${url}`)
@@ -59,6 +59,7 @@ export default function FetchUsers({list, setList, url, showDelete, filter}){
                             Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{appendMD(jsonKey,listItem[jsonKey])}</td>)))
                         }
                         {(showDelete === true) &&   <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td>}
+                        {(showUpdate === true) &&   <td><button onClick={() =>navigate(`/edit/${listItem._id}`)}>Edit</button> </td>}
 
                         {/* 
                             fist map takes the list of objects into

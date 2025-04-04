@@ -25,12 +25,12 @@
   const requireAuth = (req, res, next) =>{
     const header = req.headers.authorization;
     if(!header || !header.startsWith("Bearer ")){
-      return res.status(404).json({error:"Unauthorized"});
+      return res.status(404).json({error:"Unauthorized - No Header Authorization"});
     }
 
     const token = header.split(" ")[1];
 
-    if(!token) return res.status(401).json({error: "Unauthorized"});
+    if(!token) return res.status(401).json({error: "Unauthorized - No Token"});
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken)=>{
       if(err){
@@ -117,7 +117,7 @@
       const isMatch = await bcrypt.compare(password, hashedPassword);
 
       if (isMatch){
-        const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {expiresIn: '5m'});
+        const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {expiresIn: '30m'});
         return res.json({ success: true, message: "Authentication successful" , token: token});
       }else{
         return res.json({success: false, message:"Authentication failed"})
@@ -161,7 +161,7 @@
   })
   //delete Doctors
 
-  app.delete("/Doctors/:id", async (req,res)=>{
+  app.delete("/Doctors/:id", requireAuth, async (req,res)=>{
     try{
         const {id} = req.params;
         await DoctorsModel.findByIdAndDelete(id);
@@ -173,7 +173,27 @@
     }
   })
 
+app.put("/Doctors/:id", requireAuth, async (req,res)=>{
+  try{
+    const {id} = req.params;
+    const {name, specialization, days, availability} = req.body;
+    const updateItem = await DoctorsModel.findByIdAndUpdate(id, {name, specialization, days, availability}, {new:true});
+    res.json(updateItem);
+  }catch(err){
+    res.status(500).json({messsage: "Error updating tool"});
+  }
+});
 
+app.get("/Doctors/:id", async (req, res)=>{
+  try{
+    const id = req.params.id;
+    const item = await DoctorsModel.findById(id);
+    return res.status(200).json(item);
+  }catch(error){
+    console.error("Error in get by id: ", error);
+    res.status(500).json({message: "Error finding"});
+  }
+});
 
   //TODO make app.post server request that verifies if logged in credentials are a match to any on mongo database
 

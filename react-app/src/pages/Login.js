@@ -51,7 +51,7 @@ function Login({loginStatus, setLoginStatus}) {
         uInput.current.classList.remove('is-invalid');
         setLoginStatus(true);
         localStorage.setItem('token', data.token);
-        navigateOut('/usersCrud', {replace:true});
+        navigateOut('/dashboard', {replace:true});
       } else{
         
         setLoginStatus(false);

@@ -68,9 +68,9 @@ function Login({setLoginStatus}) {
 
   return (
       <fieldset className='form mb-3 need-validation' ref={form}>
-        <h1>User login</h1>
+        <h1 className='card-title'>User login</h1>
         <Inputs
-          className="form-control form-control-lg mb-3"
+          className="form-control form-control-lg mb-6"
           types="text" 
           name="username" 
           placeholder="username" 
@@ -84,7 +84,7 @@ function Login({setLoginStatus}) {
         <span className='input-group'>
 
             <Inputs 
-            className="form-control form-control-lg mb-3 col-6"
+            className="form-control form-control-lg mb-6 col-6"
             types={peekPassword ? "text" : "password"} 
             name="password" 
             placeholder="Password" 

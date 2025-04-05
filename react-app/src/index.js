@@ -7,12 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import bg from "./img/bg-hospital.jpg";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <div style={{backgroundImage:`url(${bg})`, backgroundSize:"cover", backgroundRepeat:"no-repeat", height:'100vh'}}>
+      <App />
+    </div>
   </React.StrictMode>
 );
 

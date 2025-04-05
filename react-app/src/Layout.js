@@ -5,7 +5,7 @@ const Layout = ({loginStatus, user}) => {
     
     return(
         <>
-        <nav className='navbar navbar-expand-lg bg-body-indigo text-white' style={primary}>
+        <nav className='navbar navbar-expand-lg text-white' style={primary}>
             <div className="container-fluid">
                 <div className="navbar-brand px-2 me-auto text-white text-truncate"> {(!loginStatus) ? 'Please login for edit access.' : 'Welcom User.'}</div>
                 {/* <div className="nav-item  col-5">Connected East Avenue Medical Center | status: {loginStatus || 'Please login'}</div> */}
@@ -24,13 +24,16 @@ const Layout = ({loginStatus, user}) => {
                 </div>
             </div>
         </nav>
-        <div className="card" style={card}>
-            <div className="card-body">
-                <Outlet />
+        
+            <div className="card bg-white border-info" style={card}>
+                <div className="card-body">
+                    <Outlet />
+                </div>
             </div>
-        </div>
+
     </>
     )
 }
 
 export default Layout;
+

@@ -23,6 +23,7 @@ const elements = {
 const card = {
     width:"90%",
     maxHeight:'90vh',
+    // minHeight:'60vh',
     margin:".5em auto .5em auto",
     textAlign:"center"
 }

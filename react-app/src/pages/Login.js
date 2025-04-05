@@ -96,11 +96,11 @@ function Login({setLoginStatus}) {
             />
 
             <button 
-              className="btn btn-dark input-group-addon col-1 mb-3" 
+              className="btn btn-dark input-group-addon mx-auto mb-3" 
               type='button' 
               onClick={()=>setPeekPassword(prev => !prev)}
             > 
-              {peekPassword ? <i className="bi bi-eye-fill"></i> : <i className="bi bi-eye-slash"></i>}
+              {peekPassword ? <i className="bi bi-eye-fill mx-auto"></i> : <i className="bi bi-eye-slash mx-auto"></i>}
             </button>
         </span>
         <button types="submit" className="btn btn-primary col-11" name="submit" onClick={()=>handleClicks()}>Submit</button>

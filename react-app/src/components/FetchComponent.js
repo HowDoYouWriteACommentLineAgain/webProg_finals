@@ -58,9 +58,10 @@ export default function FetchUsers({list, setList, url, showDelete, showUpdate})
                         {
                             Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{appendMD(jsonKey,listItem[jsonKey])}</td>)))
                         }
-                        {(showDelete === true) &&   <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td>}
-                        {(showUpdate === true) &&   <td><button onClick={() =>navigate(`/edit/${listItem._id}`)}>Edit</button> </td>}
-
+                        {(showDelete || showUpdate) && <td>
+                            {showDelete && <button className='btn btn-danger btn-sm mt-1 me-2' onClick={() => handleDelete(listItem._id)}>Delete</button> }
+                            {showUpdate && <button className='btn btn-info btn-sm mt-1' onClick={() =>navigate(`/edit/${listItem._id}`)}>Edit</button> }
+                         </td>}
                         {/* 
                             fist map takes the list of objects into
                             list Items. Then Object.Keys.map takes each 

@@ -12,7 +12,7 @@ import bg from "./img/bg-hospital.jpg";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <div style={{backgroundImage:`url(${bg})`, backgroundSize:"cover", backgroundRepeat:"no-repeat", height:'100vh'}}>
+    <div style={{backgroundImage:`url(${bg})`, backgroundSize:"cover", backgroundRepeat:"no-repeat", minHeight:'100vh', height:'100%', display: 'flex', flexDirection: 'column' }} >
       <App />
     </div>
   </React.StrictMode>

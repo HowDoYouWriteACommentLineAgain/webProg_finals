@@ -25,7 +25,7 @@ const Layout = ({loginStatus, user}) => {
             </div>
         </nav>
         
-            <div className="card bg-white border-info" style={card}>
+            <div className="card bg-white border-info" style={card} >
                 <div className="card-body">
                     <Outlet />
                 </div>

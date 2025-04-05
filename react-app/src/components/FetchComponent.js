@@ -45,36 +45,38 @@ export default function FetchUsers({list, setList, url, showDelete, showUpdate})
     }
 
     return (
-        <table className="table table-striped table-hover">
-            <thead>
-                <tr>
-                    { list[0] && Object.keys(list[0]).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && <th key={jsonKey}>{capitalizeFirst(jsonKey)}</th>))}
-                    { (showDelete === true) && (<th>Actions</th>)}
-                </tr>
-            </thead>
-            <tbody>
-                {list.map( listItem => (
-                    <tr key={listItem._id}> 
-                        {
-                            Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{appendMD(jsonKey,listItem[jsonKey])}</td>)))
-                        }
-                        {(showDelete || showUpdate) && <td>
-                            {showDelete && <button className='btn btn-danger btn-sm mt-1 me-2' onClick={() => handleDelete(listItem._id)}>Delete</button> }
-                            {showUpdate && <button className='btn btn-info btn-sm mt-1' onClick={() =>navigate(`/edit/${listItem._id}`)}>Edit</button> }
-                         </td>}
-                        {/* 
-                            fist map takes the list of objects into
-                            list Items. Then Object.Keys.map takes each 
-                            object's content gets the key for those
-                            key and extracts it with listItem[key]
-                        */}
-                        {/* <td>{listItem.username} </td>
-                        <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td> */}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-  
+        <div style={{maxHeight:'70vh', overflowY:'auto'}}>
+                    <table className="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                { list[0] && Object.keys(list[0]).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && <th key={jsonKey}>{capitalizeFirst(jsonKey)}</th>))}
+                                { (showDelete === true) && (<th>Actions</th>)}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {list.map( listItem => (
+                                <tr key={listItem._id}> 
+                                    {
+                                        Object.keys(listItem).map(jsonKey => (jsonKey !== '_id' && jsonKey !== 'password' && jsonKey !== '__v' && (<td key={jsonKey}>{appendMD(jsonKey,listItem[jsonKey])}</td>)))
+                                    }
+                                    {(showDelete || showUpdate) && <td>
+                                        {showDelete && <button className='btn btn-danger btn-sm mt-1 me-2' onClick={() => handleDelete(listItem._id)}>Delete</button> }
+                                        {showUpdate && <button className='btn btn-info btn-sm mt-1' onClick={() =>navigate(`/edit/${listItem._id}`)}>Edit</button> }
+                                    </td>}
+                                    {/* 
+                                        fist map takes the list of objects into
+                                        list Items. Then Object.Keys.map takes each 
+                                        object's content gets the key for those
+                                        key and extracts it with listItem[key]
+                                    */}
+                                    {/* <td>{listItem.username} </td>
+                                    <td><button onClick={() => handleDelete(listItem._id)}>Delete</button> </td> */}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+            
+        </div>
     );
 }
 

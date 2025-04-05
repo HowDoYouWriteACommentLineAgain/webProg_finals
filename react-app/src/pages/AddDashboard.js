@@ -31,6 +31,7 @@ export default function AddDashboard(){
         setDays('');
         setAvai('');
         addUser();
+        form.current.classList.remove('was-validated');
         
     }
 
@@ -60,7 +61,9 @@ export default function AddDashboard(){
                 throw new Error(`HTTP error! Status: ${res.status} - ${errorText}`);
             }
             
+
             alert('Item added Successfuly');
+
         }catch(error){
             console.error("Error adding Doctor: ", error);
         }

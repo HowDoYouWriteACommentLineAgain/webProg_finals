@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useRef, useState } from 'react';
 import Inputs from '../components/Inputs';
 
 export default function AddDashboard(){
@@ -7,11 +7,24 @@ export default function AddDashboard(){
     const [days, setDays] = useState('');
     const [avai, setAvai] = useState('');
 
+    const form = useRef(null);
+    const iName = useRef(null);
+    const iSpec = useRef(null);
+    const iDays = useRef(null);
+    const iAvai = useRef(null);
+
+
     function handleSubmit(){
+        form.current.classList.add('was-validated');
         if (!name || !spec || !days || !avai){
-            alert('Please populate all inputs');
             return;
         }
+
+        if(!name) iName.current.classList.add('is-invalid');
+        if(!spec) iSpec.current.classList.add('is-invalid');
+        if(!days) iDays.current.classList.add('is-invalid');
+        if(!avai) iAvai.current.classList.add('is-invalid');
+
 
         setName('');
         setSpec('');
@@ -21,11 +34,23 @@ export default function AddDashboard(){
         
     }
 
+    const handleChange = (stateSetter) => e => {
+        const content = e.target.value;
+        e.target.classList.remove('is-invalid');
+        stateSetter(content);
+        
+      }
+
     async function addUser(){
         try{
+            console.log("Sending data:", [name, spec, days, avai]); // Debugging
+            const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:5000/Doctors",{
                 method:"POST",
-                headers:{"Content-Type": "application/json"},
+                headers:{
+                    "Content-Type": "application/json",
+                    "Authorization" : `Bearer ${token}`
+                },
                 body:JSON.stringify({name: name, specialization: spec, days: days, availability: avai})
             })
 
@@ -43,12 +68,12 @@ export default function AddDashboard(){
 
     return(
         <>
-            <fieldset className="form need-validation">
+            <fieldset className="form need-validation" ref={form}>
                 <h1>Create New Item in Dashboard</h1>
-                <Inputs value={name} name="name" placeholder='Insert Name'              onChange={(e)=>setName(e.target.value)} />
-                <Inputs value={spec} name="spec" placeholder='Insert Specializations'   onChange={(e)=>setSpec(e.target.value)} />
-                <Inputs value={days} name="days" placeholder='Insert Days Available'    onChange={(e)=>setDays(e.target.value)} />
-                <Inputs value={avai} name="avai" placeholder='Insert Availability'      onChange={(e)=>setAvai(e.target.value)} />
+                <Inputs value={name} ref={iName} name="name" placeholder='Insert Name'              onChange={handleChange(setName)} />
+                <Inputs value={spec} ref={iSpec} name="spec" placeholder='Insert Specializations'   onChange={handleChange(setSpec)} />
+                <Inputs value={days} ref={iDays} name="days" placeholder='Insert Days Available'    onChange={handleChange(setDays)} />
+                <Inputs value={avai} ref={iAvai} name="avai" placeholder='Insert Availability'      onChange={handleChange(setAvai)} />
                 <button className='btn btn-primary mb-3'                                onClick={()=> handleSubmit()}>Submit</button>
             </fieldset>
         </>

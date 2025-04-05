@@ -149,7 +149,7 @@
       const {name, specialization, days, availability} = req.body;
       const AddDoctor = new DoctorsModel({name: name, specialization: specialization, days: days, availability: availability});
       await AddDoctor.save();
-      doctors = [...doctors, AddDoctor];
+      const doctors = [...doctors, AddDoctor];
       return res.json(AddDoctor);
     }catch(error){
       console.error("Error saving user:", error);

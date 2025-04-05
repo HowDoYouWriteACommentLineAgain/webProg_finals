@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Inputs from '../components/Inputs';
 
 
-function Login({loginStatus, setLoginStatus}) {
+function Login({setLoginStatus}) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -103,7 +103,7 @@ function Login({loginStatus, setLoginStatus}) {
               {peekPassword ? <i className="bi bi-eye-fill"></i> : <i className="bi bi-eye-slash"></i>}
             </button>
         </span>
-        <Inputs types="submit" className="btn btn-primary col-11" name="submit" onClick={()=>handleClicks()}/>
+        <button types="submit" className="btn btn-primary col-11" name="submit" onClick={()=>handleClicks()}>Submit</button>
     </fieldset>
 
   );
